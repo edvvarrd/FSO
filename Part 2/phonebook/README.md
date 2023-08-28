@@ -5,7 +5,7 @@ To start this app, run in application's directory:
 ```bash
 # In one terminal:
 $ npm install
-$ npm server start
+$ npm run server
 # And in second terminal:
 $ npm run dev
 ```
