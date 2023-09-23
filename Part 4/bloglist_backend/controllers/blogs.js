@@ -41,8 +41,12 @@ blogsRouter.delete(
 				.status(401)
 				.json({ error: `to delete a blog, u have to be it's creator.` })
 		} else {
-			const deletedBlog = await Blog.findByIdAndRemove(blog.id)
-			response.status(204).send(deletedBlog)
+			await Blog.findByIdAndRemove(blog.id)
+			request.user.blogs = request.user.blogs.filter(
+				usersBlog => usersBlog.toString() !== blog.id.toString()
+			)
+			await request.user.save()
+			response.status(204).end()
 		}
 	}
 )
