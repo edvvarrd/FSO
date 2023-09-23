@@ -1,3 +1,8 @@
-DELETE http://localhost:3003/api/blogs/650f0c2709cfbe9ffe3917ec
+POST http://localhost:3003/api/blogs/650f0c2709cfbe9ffe3917ec
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWQiOiI2NTBhZjRmZWQ5MTYyZTU3N2RmOTM2NzIiLCJpYXQiOjE2OTU0ODQwMzUsImV4cCI6MTY5NTQ4NzYzNX0.4diC62wIRPH2kETOtoAEdi39i0MAHJApeYBjdtxFgLU
+
+{
+    "title": "test",
+    "author": "test",
+    "url": "test"
+}
