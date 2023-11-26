@@ -11,10 +11,17 @@ describe('<Blog />', () => {
 		likes: 2,
 		user: {
 			name: 'testing user',
+			username: 'testinguser',
 		},
 	}
+	const loggedUser = {
+		name: 'testing user',
+		username: 'testinguser',
+	}
 	test('renders title and author, but doesnt render url and likes by default', () => {
-		const container = render(<Blog blog={testingBlog} />).container
+		const container = render(
+			<Blog blog={testingBlog} loggedUser={loggedUser} />
+		).container
 
 		const element = container.querySelector('.blog')
 		const elementExtend = container.querySelector('.blogExtend')
@@ -24,7 +31,9 @@ describe('<Blog />', () => {
 		expect(elementExtend).not.toBeVisible()
 	})
 	test('renders url and likes after clicking the button', async () => {
-		const container = render(<Blog blog={testingBlog} />).container
+		const container = render(
+			<Blog blog={testingBlog} loggedUser={loggedUser} />
+		).container
 
 		const user = userEvent.setup()
 		const button = screen.getByText('show')
@@ -37,7 +46,9 @@ describe('<Blog />', () => {
 	test('received as props event handles i called twice when clicked twice', async () => {
 		const mockHandler = jest.fn()
 
-		render(<Blog blog={testingBlog} like={mockHandler} />)
+		render(
+			<Blog blog={testingBlog} like={mockHandler} loggedUser={loggedUser} />
+		)
 
 		const user = userEvent.setup()
 
