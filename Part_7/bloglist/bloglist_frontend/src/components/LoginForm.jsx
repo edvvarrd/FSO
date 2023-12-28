@@ -8,6 +8,52 @@ import { useLogin } from '../context/loginContext'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 
+import styled from 'styled-components'
+
+import { PrimaryButton } from './style/Buttons'
+
+const LoginBox = styled.div`
+	width: fit-content;
+	padding: 0.5em 1em;
+	border: 1px solid #023e8a;
+	border-radius: 0 5px 5px 5px;
+`
+
+const FormTitle = styled.h2`
+	margin-bottom: 0.25em;
+	font-weight: 300;
+	text-transform: uppercase;
+`
+const Form = styled.form`
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+`
+
+const FormField = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5em;
+`
+
+const FormInput = styled.input`
+	padding: 0.1em 0.3em;
+	border: 1px solid #bbb;
+	border-radius: 5px;
+	&:hover {
+		border: 1px solid #0077b6;
+	}
+	&:focus {
+		outline: none;
+		border: 1px solid #023e8a;
+	}
+`
+
+const LoginButton = styled(PrimaryButton)`
+	align-self: flex-end;
+`
+
 const LoginForm = () => {
 	const { reset: usernameFormReset, ...usernameForm } = useField('text')
 	const { reset: passwordFormReset, ...passwordForm } = useField('password')
@@ -38,22 +84,22 @@ const LoginForm = () => {
 		}
 	}
 	return (
-		<>
-			<h2>log in to application</h2>
-			<form onSubmit={handleLogin}>
-				<div>
+		<LoginBox>
+			<FormTitle>log in to application</FormTitle>
+			<Form onSubmit={handleLogin}>
+				<FormField>
 					<label htmlFor="username">Username: </label>
-					<input {...usernameForm} />
-				</div>
-				<div>
+					<FormInput {...usernameForm} />
+				</FormField>
+				<FormField>
 					<label htmlFor="password">Password: </label>
-					<input {...passwordForm} />
-				</div>
-				<button type="submit" id="login">
+					<FormInput {...passwordForm} />
+				</FormField>
+				<LoginButton type="submit" id="login">
 					login
-				</button>
-			</form>
-		</>
+				</LoginButton>
+			</Form>
+		</LoginBox>
 	)
 }
 

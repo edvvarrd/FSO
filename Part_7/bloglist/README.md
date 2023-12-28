@@ -26,3 +26,6 @@ PORT = 'x'
 # Secret variable for decrypthing hashpasswords
 SECRET = 'x'
 ```
+
+testing login: tester
+testign password: testerpass
