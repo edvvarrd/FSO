@@ -4,7 +4,7 @@ To start this app, run in application's front-end directory:
 
 ```bash
 $ npm install
-$ npm run start
+$ npm run dev
 ```
 
 and in application's back-end inventory:
@@ -14,7 +14,7 @@ $ npm install
 $ npm run start
 ```
 
-To properly run an application, it needs to provide .env file in root directory - that contains variables:
+To properly run an application, it needs to provide .env file in backend directory - that contains variables:
 
 ```bash
 # MongoDB url
