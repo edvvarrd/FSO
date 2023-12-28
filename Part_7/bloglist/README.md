@@ -4,20 +4,14 @@ To start this app, run in application's front-end directory:
 
 ```bash
 $ npm install
-$ npm run start:dev
+$ npm run start
 ```
 
 and in application's back-end inventory:
 
 ```bash
 $ npm install
-$ npm run start:test
-```
-
-To run cypress tests, run in application's front-end directory:
-
-```bash
-$ npm run cypress:open
+$ npm run start
 ```
 
 To properly run an application, it needs to provide .env file in root directory - that contains variables:
@@ -31,11 +25,4 @@ TEST_MONGODB_URI = 'x'
 PORT = 'x'
 # Secret variable for decrypthing hashpasswords
 SECRET = 'x'
-```
-
-Testing user is:
-
-```bash
-username: test2
-password: test2
 ```
