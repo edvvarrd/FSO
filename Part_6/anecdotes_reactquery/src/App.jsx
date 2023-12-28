@@ -1,6 +1,6 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-import { useNotificationDispatch } from '../NotificationContext'
+import { useNotificationDispatch } from './NotificationContext'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 

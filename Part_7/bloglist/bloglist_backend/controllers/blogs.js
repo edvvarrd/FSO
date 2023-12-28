@@ -11,23 +11,25 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
 	const blog = new Blog({ ...request.body, user: request.user.id })
-	if (blog.title && blog.url) {
-		const postedBlog = await blog.save()
-		postedBlog.user = request.user._id
-		response.status(201).json(postedBlog)
-	} else {
-		response.status(400).end()
+	if (!blog.title || !blog.url) {
+		return response
+			.status(400)
+			.json({ error: `Couldn't add a blog, make sure u filled all fields` })
 	}
+	blog.populate('user', {
+		blogs: 0,
+	})
+	const postedBlog = await blog.save()
 	request.user.blogs = request.user.blogs.concat(blog._id)
 	await request.user.save()
+	response.status(201).json(postedBlog)
 })
 blogsRouter.get('/:id', async (request, response) => {
 	const blog = await Blog.findById(request.params.id)
-	if (blog) {
-		response.json(blog)
-	} else {
-		response.send(404).end()
+	if (!blog) {
+		return response.send(404).end()
 	}
+	response.json(blog)
 })
 
 blogsRouter.delete(
@@ -41,14 +43,13 @@ blogsRouter.delete(
 			return response
 				.status(401)
 				.json({ error: `to delete a blog, u have to be it's creator.` })
-		} else {
-			await Blog.findByIdAndRemove(blog.id)
-			request.user.blogs = request.user.blogs.filter(
-				usersBlog => usersBlog.toString() !== blog.id.toString()
-			)
-			await request.user.save()
-			response.status(204).end()
 		}
+		await Blog.findByIdAndRemove(blog.id)
+		request.user.blogs = request.user.blogs.filter(
+			usersBlog => usersBlog.toString() !== blog.id.toString()
+		)
+		await request.user.save()
+		response.status(200).json(blog)
 	}
 )
 
@@ -61,10 +62,29 @@ blogsRouter.put('/:id', async (request, response) => {
 		}
 	).populate('user', { blogs: 0 })
 	if (!updatedBlog) {
-		response.status(404).end()
-	} else {
-		response.json(updatedBlog)
+		return response.status(404).end()
 	}
+	response.json(updatedBlog)
+})
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+	if (!request.body.content) {
+		return response.status(400).json({ error: `content is required` })
+	}
+	const blogToComment = await Blog.findById(request.params.id)
+	if (!blogToComment) {
+		return response.status(404).end()
+	}
+	const result = await Blog.findByIdAndUpdate(
+		request.params.id,
+		{
+			comments: blogToComment.comments.concat(request.body.content),
+		},
+		{ new: true }
+	).populate('user', {
+		blogs: 0,
+	})
+	response.status(200).send(result)
 })
 
 module.exports = blogsRouter
