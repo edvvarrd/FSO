@@ -28,4 +28,4 @@ SECRET = 'x'
 ```
 
 testing login: tester
-testign password: testerpass
+testing password: testerpass

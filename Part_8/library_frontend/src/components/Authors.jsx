@@ -4,11 +4,15 @@ import { useQuery, useMutation } from '@apollo/client'
 
 import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
 
+import { useUser } from '../context/userContext'
+
 import Select from 'react-select'
 
 const Authors = () => {
 	const [name, setName] = useState('')
 	const [born, setBorn] = useState('')
+
+	const user = useUser()
 
 	const authors = useQuery(ALL_AUTHORS)
 
@@ -29,7 +33,9 @@ const Authors = () => {
 	}
 
 	if (authors.loading) {
-		return <div>Loading...</div>
+		return <p>Loading authors...</p>
+	} else if (authors.error) {
+		return <p>Ooops...</p>
 	}
 
 	const options = authors.data.allAuthors.map(a => ({
@@ -58,23 +64,25 @@ const Authors = () => {
 					</tbody>
 				</table>
 			</div>
-			<div>
-				<h2>set birthyear</h2>
-				<form onSubmit={submit}>
-					<div>
-						name
-						<Select value={name} onChange={setName} options={options} />
-					</div>
-					<div>
-						born
-						<input
-							value={born}
-							onChange={({ target }) => setBorn(parseInt(target.value))}
-						/>
-					</div>
-					<button>update author</button>
-				</form>
-			</div>
+			{user && (
+				<div>
+					<h2>set birthyear</h2>
+					<form onSubmit={submit}>
+						<div>
+							name
+							<Select value={name} onChange={setName} options={options} />
+						</div>
+						<div>
+							born
+							<input
+								value={born}
+								onChange={({ target }) => setBorn(parseInt(target.value))}
+							/>
+						</div>
+						<button>update author</button>
+					</form>
+				</div>
+			)}
 		</div>
 	)
 }
