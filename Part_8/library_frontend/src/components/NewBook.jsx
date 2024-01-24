@@ -4,9 +4,9 @@ import { useMutation, useApolloClient } from '@apollo/client'
 
 import { useNavigate } from 'react-router'
 
-import { ADD_BOOK, ALL_BOOKS } from '../queries'
+import { ADD_BOOK, ALL_BOOKS, ALL_GENRES } from '../queries'
 
-import { updateCache } from '../cacheHelper'
+import { updateCacheBooks, updateCacheGenres } from '../cacheHelper'
 
 const NewBook = () => {
 	const [title, setTitle] = useState('')
@@ -28,13 +28,35 @@ const NewBook = () => {
 			console.log(messages)
 		},
 		update: (cache, response) => {
-			updateCache(client.cache, { query: ALL_BOOKS }, response.data.addBook)
+			const bookAdded = response.data.addBook
+			updateCacheBooks(client.cache, { query: ALL_BOOKS }, bookAdded)
+			bookAdded.genres.forEach(genre => {
+				const genreQuery = client.readQuery({
+					query: ALL_BOOKS,
+					variables: { genre: genre },
+				})
+				if (genreQuery) {
+					updateCacheBooks(
+						client.cache,
+						{
+							query: ALL_BOOKS,
+							variables: { genre: genre },
+						},
+						bookAdded
+					)
+				}
+				const allGenres = client.readQuery({
+					query: ALL_GENRES,
+				})
+				if (allGenres) {
+					updateCacheGenres(client.cache, { query: ALL_GENRES }, bookAdded)
+				}
+			})
 		},
 	})
 
 	const submit = async event => {
 		event.preventDefault()
-
 		addBook({ variables: { title, author, published, genres } })
 
 		setTitle('')
@@ -43,12 +65,12 @@ const NewBook = () => {
 		setGenres([])
 		setGenre('')
 	}
-
 	const addGenre = () => {
-		setGenres(genres.concat(genre))
+		if (genre !== '') {
+			setGenres(genres.concat(genre))
+		}
 		setGenre('')
 	}
-
 	return (
 		<div style={{ margin: '20px 0' }}>
 			<form onSubmit={submit}>

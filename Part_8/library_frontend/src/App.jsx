@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom'
 
 import { useUser, useSetUser, useLogout } from './context/userContext'
 
-import { ALL_BOOKS, BOOK_ADDED } from './queries'
+import { ALL_BOOKS, ALL_GENRES, BOOK_ADDED } from './queries'
 
-import { updateCache } from './cacheHelper'
+import { updateCacheBooks, updateCacheGenres } from './cacheHelper'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -36,17 +36,38 @@ const App = () => {
 
 	useSubscription(BOOK_ADDED, {
 		onData: ({ data, client }) => {
-			const book = data.data.bookAdded
+			const bookAdded = data.data.bookAdded
+			window.alert(`${bookAdded.title} added!`)
 
-			window.alert(`${book.title} added!`)
-
-			updateCache(
+			updateCacheBooks(
 				client.cache,
 				{
 					query: ALL_BOOKS,
 				},
-				book
+				bookAdded
 			)
+			bookAdded.genres.forEach(genre => {
+				const genreQuery = client.readQuery({
+					query: ALL_BOOKS,
+					variables: { genre: genre },
+				})
+				if (genreQuery) {
+					updateCacheBooks(
+						client.cache,
+						{
+							query: ALL_BOOKS,
+							variables: { genre: genre },
+						},
+						bookAdded
+					)
+				}
+			})
+			const allGenres = client.readQuery({
+				query: ALL_GENRES,
+			})
+			if (allGenres) {
+				updateCacheGenres(client.cache, { query: ALL_GENRES }, bookAdded)
+			}
 		},
 	})
 

@@ -2,12 +2,12 @@ import { useUser } from '../context/userContext'
 
 import { useQuery } from '@apollo/client'
 
-import { ALL_BOOKS_GENRE } from '../queries'
+import { ALL_BOOKS } from '../queries'
 
 const Recommend = () => {
 	const user = useUser()
 
-	const filteredBooks = useQuery(ALL_BOOKS_GENRE, {
+	const filteredBooks = useQuery(ALL_BOOKS, {
 		variables: {
 			genre: user ? user.favoriteGenre : null,
 		},

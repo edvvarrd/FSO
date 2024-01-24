@@ -27,16 +27,6 @@ export const BOOK_DETAILS = gql`
 export const ALL_BOOKS = gql`
 	${BOOK_DETAILS}
 
-	query {
-		allBooks {
-			...BookDetails
-		}
-	}
-`
-
-export const ALL_BOOKS_GENRE = gql`
-	${BOOK_DETAILS}
-
 	query ($genre: String) {
 		allBooks(genre: $genre) {
 			...BookDetails

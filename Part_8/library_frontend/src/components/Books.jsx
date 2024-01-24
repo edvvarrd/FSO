@@ -2,14 +2,14 @@ import { useState } from 'react'
 
 import { useQuery } from '@apollo/client'
 
-import { ALL_GENRES, ALL_BOOKS_GENRE } from '../queries'
+import { ALL_GENRES, ALL_BOOKS } from '../queries'
 
 const Books = ({ books }) => {
 	const [genreFilter, setGenreFilter] = useState(null)
 
 	const genres = useQuery(ALL_GENRES)
 
-	const filteredBooks = useQuery(ALL_BOOKS_GENRE, {
+	const filteredBooks = useQuery(ALL_BOOKS, {
 		variables: { genre: genreFilter },
 		skip: !genreFilter,
 	})
@@ -30,9 +30,12 @@ const Books = ({ books }) => {
 	}
 
 	const allGenres = genres.data.allBooks.reduce((array, current) => {
-		if (!array.includes(...current.genres)) {
-			array.push(...current.genres)
-		}
+		current.genres.forEach(genre => {
+			if (array.includes(genre)) {
+				return
+			}
+			array.push(genre)
+		})
 		return array
 	}, [])
 
