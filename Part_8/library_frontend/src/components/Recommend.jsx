@@ -2,20 +2,20 @@ import { useUser } from '../context/userContext'
 
 import { useQuery } from '@apollo/client'
 
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS_GENRE } from '../queries'
 
 const Recommend = () => {
 	const user = useUser()
 
-	const books = useQuery(ALL_BOOKS, {
+	const filteredBooks = useQuery(ALL_BOOKS_GENRE, {
 		variables: {
 			genre: user ? user.favoriteGenre : null,
 		},
 	})
 
-	if (books.loading) {
+	if (filteredBooks.loading) {
 		return <p>Loading books...</p>
-	} else if (books.error) {
+	} else if (filteredBooks.error) {
 		return <p>Error while loading books...</p>
 	}
 
@@ -36,7 +36,7 @@ const Recommend = () => {
 						<th>author</th>
 						<th>published</th>
 					</tr>
-					{books.data.allBooks.map(book => (
+					{filteredBooks.data.allBooks.map(book => (
 						<tr key={book.id}>
 							<td>{book.title}</td>
 							<td>{book.author.name}</td>

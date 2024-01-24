@@ -20,6 +20,7 @@
 		"graphql-ws": "^5.14.3",
 		"jsonwebtoken": "^9.0.2",
 		"mongoose": "^7.0.0",
+		"mongoose-autopopulate": "^1.1.0",
 		"mongoose-unique-validator": "^4.0.0",
 		"uuid": "^9.0.1",
 		"ws": "^8.16.0"

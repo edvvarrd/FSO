@@ -14,8 +14,9 @@ const Authors = () => {
 
 	const user = useUser()
 
-	const authors = useQuery(ALL_AUTHORS)
-
+	const authors = useQuery(ALL_AUTHORS, {
+		pollInterval: 2000,
+	})
 	const [editAuthor] = useMutation(EDIT_AUTHOR, {
 		refetchQueries: [{ query: ALL_AUTHORS }],
 		onError: error => {

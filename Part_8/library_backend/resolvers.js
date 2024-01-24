@@ -11,9 +11,7 @@ const Book = require('./models/Book')
 const resolvers = {
 	Author: {
 		bookCount: async root => {
-			const searchedAuthor = await Author.findOne({ name: root.name })
-			const authorsBooks = await Book.find({ author: searchedAuthor })
-			return authorsBooks.length
+			return root.books.length
 		},
 	},
 	Book: {
@@ -55,26 +53,22 @@ const resolvers = {
 
 			if (!author) {
 				author = new Author({ name: args.author })
-				try {
-					await author.save()
-				} catch (error) {
-					throw new GraphQLError('Saving author failed', {
-						extensions: 'BAD_AUTHOR_INPUT',
-						invalidArgs: args.author,
-						error,
-					})
-				}
+				await author.save()
 			}
 
 			const book = new Book({ ...args, author: author })
 
 			try {
 				await book.save()
+				author.books = author.books.concat(book)
+				await author.save()
 			} catch (error) {
-				throw new GraphQLError('Saving book failed', {
-					extensions: 'BAD_BOOK_INPUT',
-					invalidArgs: args,
-					error,
+				throw new GraphQLError('Inserting the book and author failed', {
+					extensions: {
+						code: 'BAD_USER_INPUT',
+						invalidArgs: args,
+						error,
+					},
 				})
 			}
 

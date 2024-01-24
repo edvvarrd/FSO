@@ -1,10 +1,12 @@
 import { useState } from 'react'
 
-import { useMutation } from '@apollo/client'
+import { useMutation, useApolloClient } from '@apollo/client'
 
 import { useNavigate } from 'react-router'
 
-import { ADD_BOOK } from '../queries'
+import { ADD_BOOK, ALL_BOOKS } from '../queries'
+
+import { updateCache } from '../cacheHelper'
 
 const NewBook = () => {
 	const [title, setTitle] = useState('')
@@ -15,14 +17,18 @@ const NewBook = () => {
 
 	const navigate = useNavigate()
 
+	const client = useApolloClient()
+
 	const [addBook] = useMutation(ADD_BOOK, {
-		refetchQueries: { include: 'active' },
 		onCompleted: () => {
 			navigate('/books')
 		},
 		onError: error => {
 			const messages = error.graphQLErrors.map(e => e.message).join('\n')
 			console.log(messages)
+		},
+		update: (cache, response) => {
+			updateCache(client.cache, { query: ALL_BOOKS }, response.data.addBook)
 		},
 	})
 
@@ -44,7 +50,7 @@ const NewBook = () => {
 	}
 
 	return (
-		<div>
+		<div style={{ margin: '20px 0' }}>
 			<form onSubmit={submit}>
 				<div>
 					title

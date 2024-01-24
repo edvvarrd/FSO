@@ -1,11 +1,15 @@
 import { useEffect } from 'react'
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 
-import { useApolloClient } from '@apollo/client'
+import { useQuery, useSubscription, useApolloClient } from '@apollo/client'
 
 import { useNavigate } from 'react-router-dom'
 
 import { useUser, useSetUser, useLogout } from './context/userContext'
+
+import { ALL_BOOKS, BOOK_ADDED } from './queries'
+
+import { updateCache } from './cacheHelper'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -27,6 +31,24 @@ const App = () => {
 	const client = useApolloClient()
 
 	const navigate = useNavigate()
+
+	const books = useQuery(ALL_BOOKS)
+
+	useSubscription(BOOK_ADDED, {
+		onData: ({ data, client }) => {
+			const book = data.data.bookAdded
+
+			window.alert(`${book.title} added!`)
+
+			updateCache(
+				client.cache,
+				{
+					query: ALL_BOOKS,
+				},
+				book
+			)
+		},
+	})
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('library-user'))
@@ -59,9 +81,9 @@ const App = () => {
 			<Routes>
 				<Route path="/" element={<Navigate replace to="/authors" />} />
 				<Route path="/authors" element={<Authors />} />
-				<Route path="/books" element={<Books />} />
+				<Route path="/books" element={<Books books={books} />} />
 				<Route path="/newbook" element={<NewBook />} />
-				<Route path="/recommend" element={<Recommend />} />
+				<Route path="/recommend" element={<Recommend books={books} />} />
 				<Route path="/login" element={<Login />} />
 			</Routes>
 		</>

@@ -18,9 +18,9 @@ const User = require('./models/User')
 const typeDefs = require('./schemas')
 const resolvers = require('./resolvers')
 
-require('dotenv').config()
-
 const jwt = require('jsonwebtoken')
+
+require('dotenv').config()
 
 const MONGODB_URI = process.env.MONGODB_URI
 const PORT = process.env.PORT
@@ -33,6 +33,8 @@ mongoose
 	.catch(error => {
 		console.log('error connecting to MongoDB', error.message)
 	})
+
+mongoose.set('debug', true)
 
 const start = async () => {
 	const app = express()

@@ -2,17 +2,20 @@ import { useState } from 'react'
 
 import { useQuery } from '@apollo/client'
 
-import { ALL_BOOKS, ALL_GENRES } from '../queries'
+import { ALL_GENRES, ALL_BOOKS_GENRE } from '../queries'
 
-const Books = () => {
+const Books = ({ books }) => {
 	const [genreFilter, setGenreFilter] = useState(null)
 
-	const genres = useQuery(ALL_GENRES, { pollInterval: 2000 })
+	const genres = useQuery(ALL_GENRES)
 
-	const books = useQuery(ALL_BOOKS, {
+	const filteredBooks = useQuery(ALL_BOOKS_GENRE, {
 		variables: { genre: genreFilter },
-		pollInterval: 2000,
+		skip: !genreFilter,
 	})
+
+	const showBooks =
+		filteredBooks.data || filteredBooks.loading ? filteredBooks : books
 
 	if (genres.loading) {
 		return <p>Loading genres...</p>
@@ -20,7 +23,7 @@ const Books = () => {
 		return <p>Ooops...</p>
 	}
 
-	if (books.loading) {
+	if (showBooks.loading) {
 		return <p>Loading books...</p>
 	} else if (books.error) {
 		return <p>Ooops...</p>
@@ -57,7 +60,7 @@ const Books = () => {
 						<th>author</th>
 						<th>published</th>
 					</tr>
-					{books.data.allBooks.map(book => (
+					{showBooks.data.allBooks.map(book => (
 						<tr key={book.id}>
 							<td>{book.title}</td>
 							<td>{book.author.name}</td>
