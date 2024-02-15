@@ -8,8 +8,9 @@ export const parseValues = (args: string[]): number[] => {
 			if (isNaN(Number(i))) {
 				throw new Error('All arguments must be numbers');
 			}
-			values.push(Number(args[Number(i)]));
+			values.push(Number(i));
 		}
 	}
+	console.log(values);
 	return values;
 };
