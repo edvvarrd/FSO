@@ -18,14 +18,11 @@ To properly run an application, it needs to provide .env file in backend directo
 
 ```bash
 # MongoDB url
-MONGODB_URI = 'x'
+MONGODB_URL = 'x'
 # MongoDB url for testing
-TEST_MONGODB_URI = 'x'
+TEST_MONGODB_URL = 'x'
 # Port for running an application
 PORT = 'x'
 # Secret variable for decrypthing hashpasswords
 SECRET = 'x'
 ```
-
-testing login: tester
-testing password: testerpass
