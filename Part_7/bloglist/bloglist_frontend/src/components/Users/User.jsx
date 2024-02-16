@@ -14,20 +14,6 @@ const HeaderTitle = styled.h2`
 	text-transform: uppercase;
 	letter-spacing: 0.1cap;
 `
-const DetailedUser = styled.div`
-	display: flex;
-	flex-direction: column;
-	padding: 1em 1em;
-	border: 1px solid #0077b6;
-	border-radius: 5px;
-	h3 {
-		font-weight: 300;
-		margin: 0.5em 0;
-	}
-	ul {
-		list-style-type: none;
-	}
-`
 
 const BlogLink = styled(Link)`
 	display: block;

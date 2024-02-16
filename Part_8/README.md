@@ -21,6 +21,6 @@ To properly run an application, it needs to provide .env file in backend directo
 MONGODB_URI = 'x'
 # Port for running an application
 PORT = 'x'
-# Secret variable for decrypthing hashpasswords
+# Secret variable for decrypthing hashpassword
 JWT_SECRET = 'x'
 ```

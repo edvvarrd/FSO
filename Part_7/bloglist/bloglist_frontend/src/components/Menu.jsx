@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { Container } from './style/Container'
 import { PrimaryButton } from './style/Buttons'
 
-export const MenuContainer = styled(Container)`
+const MenuContainer = styled(Container)`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
