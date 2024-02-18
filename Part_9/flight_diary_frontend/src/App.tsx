@@ -1,31 +1,28 @@
 import { useState, useEffect } from 'react';
 
-import { NewDiaryEntry, NonSensitiveDiaryEntry } from './types';
+import { DiaryEntry } from './types';
 
 import { getDiaries } from './services/diaryService';
 
-import Header from './components/Header';
 import Content from './components/Content';
 import Form from './components/Form';
 
 const App = () => {
-	const [diaries, setDiaries] = useState<NonSensitiveDiaryEntry[]>([]);
+	const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
 	useEffect(() => {
 		getDiaries().then(data => setDiaries(data));
 	}, []);
-
-	const updateDiaries = (diary: NewDiaryEntry) => {
+	const updateDiaries = (diary: DiaryEntry) => {
 		setDiaries(
 			diaries.concat({
-				id: diaries.length + 1,
 				...diary,
-			} as NonSensitiveDiaryEntry)
+			})
 		);
 	};
 
 	return (
 		<>
-			<Header title="Ikari's Flight Diaries" />
+			<h1>Ikari's Flight Diaries</h1>
 			<Form updateDiaries={updateDiaries} />
 			<Content diaries={diaries} />
 		</>

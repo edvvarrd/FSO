@@ -5,12 +5,12 @@ import { addDiary } from '../services/diaryService';
 import axios from 'axios';
 
 import { isString } from '../utils';
-import { NewDiaryEntry } from '../types';
+import { NewDiaryEntry, DiaryEntry } from '../types';
 
 const Form = ({
 	updateDiaries,
 }: {
-	updateDiaries: (diary: NewDiaryEntry) => void;
+	updateDiaries: (diary: DiaryEntry) => void;
 }) => {
 	const [date, setDate] = useState('');
 	const [visibility, setVisibility] = useState('');
@@ -18,7 +18,7 @@ const Form = ({
 	const [comment, setComment] = useState('');
 	const [error, setError] = useState('');
 
-	const submit = (event: React.SyntheticEvent) => {
+	const submit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
 		const newDiaryEntry = {
 			date,
@@ -31,23 +31,21 @@ const Form = ({
 			newDiaryEntry.visibility === '' ||
 			newDiaryEntry.weather === ''
 		) {
-			return setError('Some fields are missing!');
+			return setError('Some required fields are missing!');
 		}
-		addDiary(newDiaryEntry as NewDiaryEntry)
+		await addDiary(newDiaryEntry as NewDiaryEntry)
 			.then(data => {
-				updateDiaries(data as NewDiaryEntry);
-				setError('');
+				updateDiaries(data);
 			})
 			.catch(error => {
 				if (axios.isAxiosError(error) && isString(error.response?.data)) {
-					setError(error.response?.data);
+					return setError(error.response.data);
 				} else {
-					setError('Something went wrong while adding new diary');
+					return setError('Something went wrong while adding new diary');
 				}
 			});
+		setError('');
 		setDate('');
-		setVisibility('');
-		setWeather('');
 		setComment('');
 	};
 
