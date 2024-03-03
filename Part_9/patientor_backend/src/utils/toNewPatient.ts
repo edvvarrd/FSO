@@ -1,18 +1,6 @@
-import { newPatient, Gender } from './types';
+import { newPatient, Gender } from '../types';
 
-const isString = (text: unknown): text is string => {
-	return typeof text === 'string' || text instanceof String;
-};
-
-const isDate = (date: string): boolean => {
-	return Boolean(Date.parse(date));
-};
-
-const isGender = (param: string): param is Gender => {
-	return Object.values(Gender)
-		.map(v => v.toString())
-		.includes(param);
-};
+import { isString, isDate } from './utils';
 
 const parseName = (name: unknown): string => {
 	if (!name || !isString(name)) {
@@ -36,6 +24,12 @@ const parseSsn = (ssn: unknown): string => {
 	}
 
 	return ssn;
+};
+
+const isGender = (param: string): param is Gender => {
+	return Object.values(Gender)
+		.map(v => v.toString())
+		.includes(param);
 };
 
 const parseGender = (gender: unknown): Gender => {

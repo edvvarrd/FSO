@@ -7,4 +7,4 @@ $ npm install
 $ npm run start
 ```
 
-Application works with a frontend available [here](https://github.com/edvvarrd/patientor_frontend)
+Application works with a frontend available [here](https://github.com/edvvarrd/FSO/tree/main/Part_9/patientor_frontend)
