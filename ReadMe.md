@@ -3,3 +3,4 @@ Every part has a specific folder that contains more folders - one for every exer
 
 Part 3 is located in another, specific repository: [here](https://github.com/edvvarrd/FSO_p3).
 Part 10 is located in another, specific repository: [here](https://github.com/edvvarrd/FSO_p10).
+Part 12 is located in another, specific repository: [here](https://github.com/edvvarrd/FSO_p12).
