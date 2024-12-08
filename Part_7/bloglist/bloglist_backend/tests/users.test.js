@@ -46,9 +46,7 @@ describe(`new user`, () => {
 			.send(testUser)
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
-		expect(response.error.text).toContain(
-			'User validation failed: username: Error, expected `username` to be unique.'
-		)
+		expect(response.body.error).toContain('User validation failed: username: Error, expected `username` to be unique.')
 	})
 	test(`can't be added if username is too short`, async () => {
 		const testUser = {
@@ -61,9 +59,7 @@ describe(`new user`, () => {
 			.send(testUser)
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
-		expect(response.error.text).toContain(
-			'User validation failed: username: username is too short.'
-		)
+		expect(response.body.error).toContain('User validation failed: username: username is too short.')
 	})
 	test(`can't be added if username is missing`, async () => {
 		const testUser = {
@@ -76,9 +72,7 @@ describe(`new user`, () => {
 			.send(testUser)
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
-		expect(response.error.text).toContain(
-			'User validation failed: username: username is required.'
-		)
+		expect(response.body.error).toContain('User validation failed: username: username is required.')
 	})
 	test(`can't be added if password is too short`, async () => {
 		const testUser = {
@@ -91,9 +85,7 @@ describe(`new user`, () => {
 			.send(testUser)
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
-		expect(response.error.text).toContain(
-			'User validation failed: password: password is too short.'
-		)
+		expect(response.body.error).toContain('User validation failed: password is too short.')
 	})
 	test(`can't be added if password is missing`, async () => {
 		const testUser = {
@@ -106,9 +98,7 @@ describe(`new user`, () => {
 			.send(testUser)
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
-		expect(response.error.text).toContain(
-			'User validation failed: password: password is required.'
-		)
+		expect(response.body.error).toContain('User validation failed: password is required.')
 	})
 })
 
