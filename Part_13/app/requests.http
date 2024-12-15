@@ -1,0 +1,99 @@
+GET http://localhost:3001/api/blogs HTTP/1.1
+
+###
+
+POST http://localhost:3001/api/blogs HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlckBnbWFpbC5jb20iLCJpZCI6MSwiaWF0IjoxNzM0Mjk5MzcwfQ.xWlnbZTPqYcWsTCx9eBE99kNSHAiruNCdubDC4ren5Q
+
+{
+    "author": "Testing author #99",
+    "url": "Testing URL #99",
+    "title": "Testing title #99",
+    "year": 2008
+}
+
+###
+
+DELETE http://localhost:3001/api/blogs/8 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlcjJAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTczNDEzMTE1MX0.msc3oFhpUM0dk6MynJ4GM0fVO1r5PgLV-WEKHMWjPbs
+
+###
+
+PUT http://localhost:3001/api/blogs/7 HTTP/1.1
+Content-Type: application/json
+
+{
+  "likes": 3
+}
+
+###
+
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "tester@gmail.com",
+  "name": "tester"
+}
+
+###
+
+GET http://localhost:3001/api/users HTTP/1.1
+
+###
+
+GET http://localhost:3001/api/users/1?read=true HTTP/1.1
+
+###
+
+PUT http://localhost:3001/api/users/tester@gmail.com HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "tester2@gmail.com"
+}
+
+###
+
+POST http://localhost:3001/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "tester@gmail.com",
+  "password": "secret"
+}
+
+###
+
+DELETE http://localhost:3001/api/logout HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlckBnbWFpbC5jb20iLCJpZCI6MSwiaWF0IjoxNzM0Mjk5MzcwfQ.xWlnbZTPqYcWsTCx9eBE99kNSHAiruNCdubDC4ren5Q
+
+###
+
+GET http://localhost:3001/api/blogs?search=test HTTP/1.1
+
+###
+
+GET http://localhost:3001/api/authors HTTP/1.1
+
+###
+
+POST http://localhost:3001/api/readinglists HTTP/1.1
+Content-Type: application/json
+
+{
+  "blogId": 1,
+  "userId": 1
+}
+
+###
+
+PUT http://localhost:3001/api/readinglists/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlckBnbWFpbC5jb20iLCJpZCI6MSwiaWF0IjoxNzM0Mjk2MDYzfQ.KkF4FaaFXcgH4Yn1NXL-cwlEruVkekWdDUleQU5TcwQ
+
+{
+  "read": true
+}
